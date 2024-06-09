@@ -1,0 +1,87 @@
+######### Basic Settings #########
+basic:
+    device: '3'
+    seed: [1993] # icarl 官方代码给的种子是 1993
+
+    # Dataset Choises: cifar100, cifar100, imagenet100, imagenet1000, tinyimagenet,
+    # skin7, sd198(also known as skin40), mymedmnist
+    dataset: cifar100
+    shuffle: true
+
+    # Method Choises: icarl, end2end, dr, ucir, bic, lwm, podnet, mas, joint， finetune
+    method: bic
+    method_type: multi_steps
+    # eval_metric Choises: acc, recall
+    eval_metric: acc
+
+    # Backbone Choises: resnet18, resnet18_cbam, cosine_resnet18, 
+    # resnet32, cosine_resnet32, resnet34, cosine_resnet34, resnet50
+    backbone: resnet18
+    pretrained: true
+    save_models: true # if true, programm will save model's weights during incremental train
+    # base10i10
+    checkpoint_dir: "/home/21/zejun/Storage/CL_code/IL_Framework/logs/multi_step/bic_cil_replay_herding/cifar100/resnet18_b10i10/bic_resnet18_pretrained"
+    # base20i20
+    # checkpoint_dir: "/home/21/zejun/Storage/CL_code/IL_Framework/logs/multi_step/bic_cil_replay_herding/cifar100/resnet32_b20i20/bic_resnet32_b20i20_cifar"
+    # base50i50
+    #checkpoint_dir: "/home/21/zejun/Storage/CL_code/IL_Framework/logs/multi_step/bic_cil_replay_herding/cifar100/resnet32_b50i50/bic_resnet32_b50i50_cifar"
+    ######### Exampler Hyperparameters #########
+    memory_size: 2000
+    fixed_memory: false
+    # memory_per_class: 20
+    sampling_method: herding # herding, random, closest_to_mean 
+
+    ######### Task Settings, unimportant in Joint #########
+    # for some datasets(e.g. MedMNist), this will be ignored
+    split_dataset: true
+    init_cls: 10
+    increment: 10
+    prompt_num: 20
+    top_k: 5
+    manual_temp: false
+    note: bic_resnet18_pretrained
+
+
+######### Method's Hyperparameters #########
+special:
+    incre_type: cil
+    T: 2
+    split_ratio: 0.1
+
+######### Experiment Settings for Datasets #########
+options:
+    # experiment settings for cifar100
+    cifar100:         
+        resnet32:
+            epochs: 250
+            batch_size: 128
+            num_workers: 4
+
+            opt_type: sgd
+            lrate: 0.05 # 0.1
+            weight_decay: 0.0002
+            opt_mom: 0.9
+
+            scheduler: multi_step
+            milestones: [100, 150, 200]
+            lrate_decay: 0.1
+
+        resnet18:
+            img_size: 224
+
+            epochs: 110 # 200
+            batch_size: 64
+            num_workers: 4
+            
+            # opt_type: adam
+            opt_type: sgd
+            lrate: 0.001
+            weight_decay: 0.0005
+            opt_mom: 0.9
+            
+            scheduler: multi_step
+            milestones: [49, 63, 90]
+            lrate_decay: 0.1
+            
+            
+            

@@ -1,0 +1,67 @@
+######### Basic Settings #########
+basic:
+    device: '1'
+    seed: [1993] # icarl 官方代码给的种子是 1993
+
+    # Dataset Choises: cifar100, cifar100, imagenet100, imagenet1000, tinyimagenet,
+    # skin7, sd198(also known as skin40), mymedmnist
+    dataset: skin8 # 
+    shuffle: false
+
+    # Method Choises: icarl, end2end, dr, ucir, bic, lwm, podnet, mas, joint， finetune
+    method: cnn_task_adapter
+    method_type: single_step
+    # eval_metric Choises: acc, recall
+    eval_metric: mcr
+
+    # Backbone Choises: resnet18, resnet18_cbam, cosine_resnet18
+    # resnet32, cosine_resnet32, resnet34, cosine_resnet34, resnet50
+    backbone: resnet18
+    pretrained: true
+    freeze_fe: true
+    save_models: true # if true, programm will save model's weights during incremental train
+
+    # for more efficient experiment
+    # split_dataset: true
+    # init_cls: 10
+    # increment: 10
+
+    logger_type: tensorboard
+
+    note: special_adapter_v1_conv3x3_all_layers_lr0.001
+    # test_epoch: 10
+
+######### Method's Hyperparameters #########
+special:
+    mode: conv3x3|special_adapter_v1|use_alpha
+    layer_names: ['layer1', 'layer2', 'layer3', 'layer4']
+
+    # layer_names: ['layer1', 'layer2', 'layer3', 'layer4']
+    # mode option(without space)
+    # add adapter option
+    # adapter type: | special_adapter_v1, special_adapter_v2, channel_adapter_v1, channel_adapter_v2 |
+    # use alpha or not(appear is true): | use_alpha |
+    # special adapter kernel size(default: conv3x3): | conv3x3, conv5x5, conv7x7 |
+    # layers_name(Resnet): ['conv1','layer1','layer2','layer3','layer4']
+    # layers_name(efficientnet): ['features.1','features.3','features.5','features.7','layer4']
+
+######### Experiment Settings for Datasets #########
+options:
+    skin8:
+        resnet18:
+            img_size: 224
+
+            layer_names: ['layer1', 'layer2', 'layer3', 'layer4']
+
+            epochs: 200 #20
+            batch_size: 64 # 128
+            num_workers: 4            
+
+            opt_type: sgd
+            lrate: 0.001
+            weight_decay: 0.0005
+            opt_mom: 0.9
+
+            scheduler: multi_step
+            milestones: [70, 130, 170]
+            lrate_decay: 0.1

@@ -1,0 +1,90 @@
+######### Basic Settings #########
+basic:
+    device: '2'
+    seed: [1993] # 1, 42, 50, 100, 1993
+
+    # Dataset Choises: cifar100, cifar100, imagenet100, imagenet1000, tinyimagenet,
+    # skin7, sd198(also known as skin40), mymedmnist
+    dataset: cifar100
+    shuffle: false
+
+    # Method Choises: icarl, end2end, dr, ucir, bic, lwm, podnet, mas, joint， finetune
+    method: continual_clip
+    method_type: multi_steps
+    # eval_metric Choises: acc, recall
+    eval_metric: acc
+
+    # Backbone Choises: RN50, RN101, RN50x4, RN50x16, RN50x64,
+    # ViT-B/32, ViT-B/16, ViT-L/14, ViT-L/14@336px
+    backbone: ViT-B/16
+    pretrained: true
+    freeze_fe: true
+
+    ######### Task Settings, unimportant in Joint #########
+    # for some datasets(e.g. MedMNist), this will be ignored
+    split_dataset: true
+    init_cls: 10
+    increment: 10
+
+######### Method's Hyperparameters #########
+special:
+    incre_type: cil
+    context: A bad photo of a {}. # A bad photo of a {}.
+
+######### Experiment Settings for Datasets #########
+options:
+    # experiment settings for cifar100
+    cifar100:        
+        RN50:
+            img_size: 224
+
+            batch_size: 32 # 64
+            num_workers: 8
+        
+        RN101:
+            img_size: 224
+
+            batch_size: 32 # 64
+            num_workers: 8
+        
+        RN50x4:
+            img_size: 224
+
+            batch_size: 32 # 64
+            num_workers: 8
+        
+        RN50x16:
+            img_size: 224
+
+            batch_size: 32 # 64
+            num_workers: 8
+
+        RN50x64:
+            img_size: 224
+
+            batch_size: 32 # 64
+            num_workers: 8
+        
+        ViT-B/32:
+            img_size: 224
+
+            batch_size: 32 # 64
+            num_workers: 8
+        
+        ViT-B/16:
+            img_size: 224
+
+            batch_size: 32 # 64
+            num_workers: 8
+
+        ViT-L/14:
+            img_size: 224
+
+            batch_size: 32 # 64
+            num_workers: 8
+        
+        ViT-L/14@336px:
+            img_size: 224
+
+            batch_size: 32 # 64
+            num_workers: 8

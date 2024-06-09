@@ -1,0 +1,63 @@
+######### Basic Settings #########
+basic:
+    device: '0'
+    seed: [1993] # icarl 官方代码给的种子是 1993
+
+    dataset: imagenet_r
+    shuffle: false
+
+    # Method Choises: icarl, end2end, dr, ucir, bic, lwm, podnet, mas, joint， finetune
+    method: podnet
+    method_type: multi_steps
+    # eval_metric Choises: acc, recall
+    eval_metric: mcr
+
+    # Backbone Choises: resnet18, resnet18_cbam, cosine_resnet18, 
+    # resnet32, cosine_resnet32, resnet34, cosine_resnet34, resnet50
+    backbone: cosine_resnet18
+    pretrained: false
+    save_models: true # if true, programm will save model's weights during incremental train
+    # base10i10
+    #checkpoint_dir: "/home/21/zejun/Storage/CL_code/IL_Framework/logs/multi_step/podnet_cil_replay_herding/imagenet100/cosine_resnet18_b10i10/podnet_res18_manu_temp"
+    # base20i20
+    #checkpoint_dir: "/home/21/zejun/Storage/CL_code/IL_Framework/logs/multi_step/podnet_cil_replay_herding/imagenet100/cosine_resnet18_b20i20/podnet_res18"
+    ######### Exampler Hyperparameters #########
+    memory_size: 2000
+    fixed_memory: false # false
+    sampling_method: herding # herding, random, closest_to_mean 
+
+    ######### Task Settings, unimportant in Joint #########
+    # for some datasets(e.g. MedMNist), this will be ignored
+    split_dataset: true
+    init_cls: 20
+    increment: 20
+    prompt_num: 20
+    top_k: 5
+    manual_temp: true
+    note: podnet_0424_old-ir
+
+    # test_epoch: 40
+
+######### Method's Hyperparameters #########
+special:
+    incre_type: cil
+    lambda_c_base: 5
+    lambda_f_base: 1
+    nb_proxy: 10
+
+######### Experiment Settings for Datasets #########
+options:        
+    imagenet_r: 
+        cosine_resnet18:
+            layer_names: ['layer1', 'layer2', 'layer3', 'layer4']
+            epochs: 160 # 160
+            batch_size: 128
+            num_workers: 4
+            opt_type: sgd
+            lrate: 0.1
+            weight_decay: 0.0005
+            opt_mom: 0.9
+            scheduler: cos
+            epochs_finetune: 20
+            lrate_finetune: 0.005
+            
